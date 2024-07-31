@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <title>File Downloader in JavaScript| CodingNepal</title>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+    <div class="wrapper">
+        <header>
+            <h1>File Downloader</h1>
+        </header>
+        <form id="downloadForm">
+            <label for="videoUrl">Video URL:</label>
+            <input type="text" id="videoUrl" name="videoUrl" required>
+            <button type="submit">Download</button>
+        </form>
+    </div>
+    <div id="videoDetails" class="video-details"></div>
+
+    <!-- 
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const videoUrl = document.getElementById('videoUrl').value;
+            const apiUrl = `https://social-media-video-downloader.p.rapidapi.com/smvd/get/all?url=${encodeURIComponent(videoUrl)}`;
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': 'c84f74e945msha765b1a36148fabp142f84jsncc13fa0e3377',  // Ensure this is your actual API key
+                    'x-rapidapi-host': 'social-media-video-downloader.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, options);
+                const result = await response.json();
+
+                if (result.success) {
+                    const detailsDiv = document.getElementById('videoDetails');
+                    detailsDiv.innerHTML = `
+                        <h2>${result.title}</h2>
+                        <p><strong>Author:</strong> <a href="${result.author.channel_url}" target="_blank">${result.author.name}</a></p>
+                        <p><strong>Description:</strong> ${result.stats.description}</p>
+                        <p><strong>Video URL:</strong> <a href="${result.stats.video_url}" target="_blank">Watch Video</a></p>
+                        <img src="${result.picture}" alt="${result.title}" style="width: 200px;">
+                        <h3>Download Links:</h3>
+                        <ul>
+                            ${result.links.map(link => `
+                                <li>
+                                    <a href="${link.link}" target="_blank">Download ${link.quality}</a>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `;
+                } else {
+                    console.error('Error:', result.message);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        });
+    </script> -->
+
+    <script>
+        document.getElementById('downloadForm').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const videoUrl = document.getElementById('videoUrl').value;
+            const apiUrl = `https://social-media-video-downloader.p.rapidapi.com/smvd/get/all?url=${encodeURIComponent(videoUrl)}`;
+
+            const options = {
+                method: 'GET',
+                headers: {
+                    'x-rapidapi-key': 'c84f74e945msha765b1a36148fabp142f84jsncc13fa0e3377',  // Ensure this is your actual API key
+                    'x-rapidapi-host': 'social-media-video-downloader.p.rapidapi.com'
+                }
+            };
+
+            try {
+                const response = await fetch(apiUrl, options);
+                const result = await response.json();
+
+                if (result.success) {
+                    const detailsDiv = document.getElementById('videoDetails');
+                    detailsDiv.innerHTML = `
+                        <div class="video-thumbnail">
+                            <img src="${result.picture}" alt="${result.title}">
+                        </div>
+                        <div class="video-info">
+                            <h2 class="video-title">${result.title}</h2>
+                            <div class="video-author">
+                                <img src="${result.author.picture}" alt="${result.author.name}">
+                                <span class="author-name">${result.author.name}</span>
+                            </div>
+                            <p class="video-description">${result.stats.description}</p>
+                            <div class="video-stats">
+                                <span class="views">Views: ${result.stats.viewCount}</span>
+                                <span class="publish-date">Published on: ${result.stats.publishedDate}</span>
+                                <span class="duration">Duration: ${result.stats.duration}</span>
+                            </div>
+                            <div class="video-links">
+                                ${result.links.map(link => `<a href="${link.link}" class="download-link" target="_blank" download="${result.title}-${link.quality}.mp4">Download ${link.quality}</a>`).join('')}
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    console.error('Error:', result.message);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        });
+    </script>
+</body>
+
+</html>
